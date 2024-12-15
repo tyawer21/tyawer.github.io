@@ -1,0 +1,55 @@
+/* General styles */
+body {
+    background-color: #87CEEB; /* Light blue */
+    font-family: Arial, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header styling */
+.header {
+    text-align: center;
+    background-color: #4682B4; /* Steel blue */
+    color: white;
+    padding: 20px;
+}
+
+/* Main content styling */
+.main-content {
+    padding: 20px;
+    color: #2F4F4F; /* Dark slate gray */
+}
+
+.main-content ol {
+    padding-left: 20px;
+}
+
+.media {
+    margin-top: 20px;
+}
+
+.photos img {
+    margin: 10px;
+    border: 2px solid #4682B4;
+    border-radius: 5px;
+}
+
+/* Footer styling */
+.footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 10px;
+    background-color: #4682B4;
+    color: white;
+}
+
+/* Anchor link */
+.footer a {
+    color: #FFD700; /* Gold */
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}

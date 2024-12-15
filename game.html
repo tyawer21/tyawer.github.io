@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            height: 100vh;
+        }
+
+        canvas {
+            border: 1px solid black;
+            background-color: #fff;
+        }
+
+        #backButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #backButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Snake Game</h1>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <button id="backButton" onclick="goBackToHomepage()">Go Back to Homepage</button>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const boxSize = 20;
+        const canvasSize = canvas.width;
+        let snake = [{ x: boxSize * 5, y: boxSize * 5 }];
+        let direction = 'RIGHT';
+        let food = spawnFood();
+        let score = 0;
+
+        document.addEventListener('keydown', changeDirection);
+
+        function spawnFood() {
+            return {
+                x: Math.floor(Math.random() * (canvasSize / boxSize)) * boxSize,
+                y: Math.floor(Math.random() * (canvasSize / boxSize)) * boxSize,
+            };
+        }
+
+        function changeDirection(event) {
+            const key = event.key;
+            if (key === 'ArrowUp' && direction !== 'DOWN') direction = 'UP';
+            if (key === 'ArrowDown' && direction !== 'UP') direction = 'DOWN';
+            if (key === 'ArrowLeft' && direction !== 'RIGHT') direction = 'LEFT';
+            if (key === 'ArrowRight' && direction !== 'LEFT') direction = 'RIGHT';
+        }
+
+        function drawSnake() {
+            ctx.fillStyle = 'green';
+            snake.forEach(part => {
+                ctx.fillRect(part.x, part.y, boxSize, boxSize);
+            });
+        }
+
+        function drawFood() {
+            ctx.fillStyle = 'red';
+            ctx.fillRect(food.x, food.y, boxSize, boxSize);
+        }
+
+        function moveSnake() {
+            const head = { ...snake[0] };
+            if (direction === 'UP') head.y -= boxSize;
+            if (direction === 'DOWN') head.y += boxSize;
+            if (direction === 'LEFT') head.x -= boxSize;
+            if (direction === 'RIGHT') head.x += boxSize;
+
+            snake.unshift(head);
+
+            if (head.x === food.x && head.y === food.y) {
+                food = spawnFood();
+                score++;
+            } else {
+                snake.pop();
+            }
+        }
+
+        function checkCollision() {
+            const head = snake[0];
+            if (head.x < 0 || head.x >= canvasSize || head.y < 0 || head.y >= canvasSize) {
+                return true;
+            }
+
+            for (let i = 1; i < snake.length; i++) {
+                if (head.x === snake[i].x && head.y === snake[i].y) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        function updateGame() {
+            if (checkCollision()) {
+                alert(`Game Over! Your score: ${score}`);
+                document.location.reload();
+            }
+
+            ctx.clearRect(0, 0, canvasSize, canvasSize);
+            drawFood();
+            moveSnake();
+            drawSnake();
+        }
+
+        function goBackToHomepage() {
+            window.location.href = "index.html"; // Replace with the actual homepage URL
+        }
+
+        setInterval(updateGame, 100);
+    </script>
+</body>
+</html>
